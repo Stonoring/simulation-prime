@@ -1,0 +1,39 @@
+section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+section h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+section ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: square;
+    padding-left: 20px;
+}
+
+fieldset {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+legend {
+    font-weight: bold;
+    color: #555;
+}
+
+small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.9em;
+}

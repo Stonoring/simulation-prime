@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Synthèse des Calculs</title>
+</head>
+<body>
+    <h1>Synthèse des Primes</h1>
+
+    <h2>Données de l'Entreprise</h2>
+    <ul>
+        <li>Chiffre d'affaires moyen : {{ data["entreprise"]["ca_moyen"] }} €</li>
+        <li>Seuil maximal pour la prime : {{ data["entreprise"]["seuil_max_prime"] }} €</li>
+        <li>Montant alloué à la PPV : {{ data["entreprise"]["montant_ppv"] }} €</li>
+    </ul>
+
+    <h2>Mode de Partage : {{ data["mode_partage"] | capitalize }}</h2>
+
+    <h2>Détail des Primes</h2>
+    <table border="1">
+        <tr>
+            <th>Employé</th>
+            <th>Prime (€)</th>
+        </tr>
+        {% for employe in simulation["employees"] %}
+        <tr>
+            <td>{{ employe["employe"] }}</td>
+            <td>{{ employe["prime"] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="/">Recommencer</a>
+</body>
+</html>

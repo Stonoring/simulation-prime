@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Employés</title>
+    <script>
+        function updateEmployeeForms() {
+            const effectif = parseInt(document.getElementById("effectif").value || 0);
+            const modeElements = document.getElementsByName("mode_partage");
+            let mode = "";
+            for (let i = 0; i < modeElements.length; i++) {
+                if (modeElements[i].checked) {
+                    mode = modeElements[i].value;
+                    break;
+                }
+            }
+            const container = document.getElementById("employee-forms");
+            container.innerHTML = "";
+
+            if (mode === "uniforme") {
+                container.innerHTML = `
+                    <fieldset>
+                        <label>Salaire moyen (€) : <input type="number" name="salaire_moyen" required></label>
+                    </fieldset>
+                `;
+            } else if (mode === "salaire") {
+                for (let i = 0; i < effectif; i++) {
+                    container.innerHTML += `
+                        <fieldset>
+                            <legend>Employé ${i + 1}</legend>
+                            <label>Salaire (€) : <input type="number" name="salaire_${i}" required></label>
+                        </fieldset>
+                    `;
+                }
+            } else if (mode === "temps_travail") {
+                container.innerHTML = `
+                    <fieldset>
+                        <label>Salaire moyen (€) : <input type="number" name="salaire_moyen" required></label>
+                    </fieldset>
+                `;
+                for (let i = 0; i < effectif; i++) {
+                    container.innerHTML += `
+                        <fieldset>
+                            <legend>Employé ${i + 1}</legend>
+                            <label>Temps de travail (%) : <input type="number" name="temps_travail_${i}" required></label>
+                        </fieldset>
+                    `;
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Mode de Répartition</h1>
+    <form action="/employes" method="POST">
+        <label>Effectif total : <input type="number" id="effectif" name="effectif" required onchange="updateEmployeeForms()"></label><br><br>
+
+        <label>Mode de partage :</label><br>
+        <label><input type="radio" name="mode_partage" value="uniforme" required onclick="updateEmployeeForms()"> Uniforme</label><br>
+        <label><input type="radio" name="mode_partage" value="salaire" onclick="updateEmployeeForms()"> Proportionnelle au salaire</label><br>
+        <label><input type="radio" name="mode_partage" value="temps_travail" onclick="updateEmployeeForms()"> Proportionnelle au temps de travail</label><br><br>
+
+        <div id="employee-forms"></div>
+        <button type="submit">Suivant</button>
+    </form>
+</body>
+</html>

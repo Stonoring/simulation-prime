@@ -1,0 +1,5 @@
+# Fichiers à ignorer
+ppv_data.json
+__pycache__/
+*.pyc
+.env

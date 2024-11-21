@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Entreprise</title>
+    <script>
+        function calculateSeuil() {
+            const ca1 = parseFloat(document.getElementById("chiffre_affaire_0").value || 0);
+            const ca2 = parseFloat(document.getElementById("chiffre_affaire_1").value || 0);
+            const ca3 = parseFloat(document.getElementById("chiffre_affaire_2").value || 0);
+            const caMoyen = (ca1 + ca2 + ca3) / 3;
+            document.getElementById("ca_moyen").innerText = caMoyen.toFixed(2);
+            document.getElementById("seuil_max_prime").innerText = (caMoyen * 0.01).toFixed(2);
+        }
+    </script>
+</head>
+<body>
+    <h1>Informations sur l'entreprise</h1>
+    <form action="/" method="POST">
+        <label>CA Année 1 (€) : <input type="number" id="chiffre_affaire_0" name="chiffre_affaire_0" onchange="calculateSeuil()" required></label><br><br>
+        <label>CA Année 2 (€) : <input type="number" id="chiffre_affaire_1" name="chiffre_affaire_1" onchange="calculateSeuil()" required></label><br><br>
+        <label>CA Année 3 (€) : <input type="number" id="chiffre_affaire_2" name="chiffre_affaire_2" onchange="calculateSeuil()" required></label><br><br>
+        <p>CA Moyen : <span id="ca_moyen">0.00</span> €</p>
+        <p>Seuil Max Prime : <span id="seuil_max_prime">0.00</span> €</p>
+        <label>Montant PPV (€) : <input type="number" name="montant_ppv" required></label><br><br>
+        <button type="submit">Suivant</button>
+    </form>
+</body>
+</html>
