@@ -1,5 +1,10 @@
-"scripts": {
-  "start": "node app.js",
-  "build": "webpack --config webpack.config.js",
-  "dev": "nodemon app.js"
+{
+  "name": "simulation-prime",
+  "version": "1.0.0",
+  "description": "Une application Flask pour gérer la PPV",
+  "main": "app.py",
+  "scripts": {
+    "start": "python app.py"
+  },
+  "dependencies": {}
 }
