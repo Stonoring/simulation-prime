@@ -1,6 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-import json
-import os
 from flask_cors import CORS  # Importation de Flask-CORS
 
 app = Flask(__name__)
@@ -9,25 +7,14 @@ app.secret_key = "secret_key_ppv"
 # Activation de Flask-CORS (si nécessaire)
 CORS(app)
 
-DATA_FILE = "ppv_data.json"
-
-def save_to_file(data):
-    """Sauvegarde les données dans un fichier JSON."""
-    with open(DATA_FILE, "w") as file:
-        json.dump(data, file, indent=4)
-
-def load_from_file():
-    """Charge les données depuis un fichier JSON."""
-    if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, "r") as file:
-            return json.load(file)
-    return {}
+# Stockage temporaire des données en mémoire
+data = {}
 
 @app.route("/", methods=["GET", "POST"])
 @app.route("/entreprise", methods=["GET", "POST"])
 def entreprise():
     """Collecte des données générales de l'entreprise."""
-    data = load_from_file()
+    global data  # Utilisation de la variable globale pour le stockage temporaire
 
     if request.method == "POST":
         # Récupère les données saisies
@@ -40,14 +27,13 @@ def entreprise():
         ca_moyen = (ca1 + ca2 + ca3) / 3 if ca1 and ca2 and ca3 else 0
         seuil_max_prime = 0.01 * ca_moyen
 
-        # Sauvegarde
+        # Sauvegarde des données en mémoire
         data["entreprise"] = {
             "chiffres_affaires": [ca1, ca2, ca3],
             "ca_moyen": ca_moyen,
             "seuil_max_prime": seuil_max_prime,
             "montant_ppv": montant_ppv
         }
-        save_to_file(data)
 
         return redirect(url_for("employes"))
 
@@ -56,7 +42,7 @@ def entreprise():
 @app.route("/employes", methods=["GET", "POST"])
 def employes():
     """Gère les données des employés et le mode de partage."""
-    data = load_from_file()
+    global data  # Utilisation de la variable globale pour le stockage temporaire
 
     if request.method == "POST":
         mode = request.form.get("mode_partage")
@@ -80,7 +66,7 @@ def employes():
 
         data["mode_partage"] = mode
         data["effectif"] = effectif
-        save_to_file(data)
+
         return redirect(url_for("synthese"))
 
     return render_template("employes.html", data=data)
@@ -88,7 +74,8 @@ def employes():
 @app.route("/synthese", methods=["GET"])
 def synthese():
     """Affiche la synthèse des calculs."""
-    data = load_from_file()
+    global data  # Utilisation de la variable globale pour le stockage temporaire
+
     montant_total = data["entreprise"]["montant_ppv"]
     mode = data["mode_partage"]
     employees = []
@@ -110,7 +97,6 @@ def synthese():
 
     simulation = {"employees": employees}
     data["simulation"] = simulation
-    save_to_file(data)
 
     return render_template("synthese.html", simulation=simulation, data=data)
 
